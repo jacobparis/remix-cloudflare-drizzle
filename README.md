@@ -2,15 +2,40 @@
 
 📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/future/vite) for details on supported features.
 
-## Typegen
+## D1
 
-Generate types for your Cloudflare bindings in `wrangler.toml`:
+Create a new database named "db""
+
+```sh
+npx wrangler d1 create db
+```
+
+Paste the command output in `wrangler.toml`:
+
+```toml
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "db"
+database_id = "ccccccvktlfkrjvvrngbckuvtrrkugtu"
+# Also add this field
+migrations_dir="./app/drizzle/migrations"
+```
+
+Add the drizzle migration
+
+Generate types for your Cloudflare bindings in `wrangler.toml`. You will need to do this whenever you make changes to `wrangler.toml`.
 
 ```sh
 npm run typegen
 ```
 
-You will need to rerun typegen whenever you make changes to `wrangler.toml`.
+## Running migrations
+
+After making changes to the Drizzle schema, run the following command to generate a new migration file and apply it to your local database:
+
+```ts
+npm run db:migrate:local
+```
 
 ## Development
 
